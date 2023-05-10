@@ -49,7 +49,17 @@ function randomNumber(desiredLength) {
   return _arrayOfRandomValues(numberValuesArray, desiredLength, callback);
 }
 
+function extractNumber(joinedString, lengthOfNumber) {
+  const arr = joinedString.split("");
+  let newArr = [];
+  for (let i = arr.length - lengthOfNumber; i <= arr.length; i++) {
+    newArr.push(arr[i]);
+  }
+  return newArr.join("");
+}
+
 export {
   randomColor,
-  randomNumber
+  randomNumber,
+  extractNumber
 }
