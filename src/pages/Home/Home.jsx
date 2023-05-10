@@ -1,16 +1,23 @@
-import { Link } from "react-router-dom"
+import { useEffect, useState } from "react";
+import NewProjectBtn from "../../components/NewProjectBtn/NewProjectBtn"
 
 
 function Home() {
+  const [userInfo, setUserInfo] = useState({});
+
+  useEffect(() => {
+    const userInfo = JSON.parse(localStorage.getItem("user"))
+   
+    if (userInfo) {
+      setUserInfo(userInfo);
+    }
+
+  }, [])
+
   return (
     <>
       <h1 className="text-xl font-bold mx-auto">Home</h1>
-        <Link to="/edit/untitled">
-          <button className="bg-blue-500 text-gray-100 p-10 rounded-lg">
-            <p>Create a new masterpiece</p>
-            <p>+</p>
-          </button>
-        </Link>
+      <NewProjectBtn userInfo={userInfo} />
 
     </>
   )

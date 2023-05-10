@@ -3,7 +3,7 @@ import { Link, Outlet } from "react-router-dom"
 function Navbar() {
   return (
     <>
-      <ul className="flex w-screen justify-around">
+      <ul className="flex max-w-screen justify-around mb-10">
         <li>
           <Link to="/">Home</Link>
         </li>
