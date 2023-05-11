@@ -53,7 +53,11 @@ function WorkBench() {
 
 
   return (
-    <>
+    <div
+      style={{ 
+        heigth: "calc(100vh - 48px)",
+       }}
+    >
       <h1 className="text-xl font-bold">WorkBench</h1>
       <div>
         {
@@ -88,7 +92,7 @@ function WorkBench() {
           )
         }
       </div>
-    </>
+    </div>
   )
 }
 
