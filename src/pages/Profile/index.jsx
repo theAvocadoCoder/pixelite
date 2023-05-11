@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom"
-import NewProjectBtn from "../../components/NewProjectBtn/NewProjectBtn";
+import NewProjectBtn from "../../components/NewProjectBtn/";
 
 
 function Profile() {
