@@ -81,6 +81,7 @@ function WorkBench() {
               </p>
               <CanvasComponent
                 project={project}
+                setProject={setProject}
                 gridSize={gridSize}
                 user={{ 
                   isLoggedIn: userInfo ? true : false,

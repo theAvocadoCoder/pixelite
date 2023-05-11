@@ -2,7 +2,7 @@ import { forwardRef, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 // forwardRef allows the component to access the parent's own ref value.
-const CanvasComponent = forwardRef(function CanvasComponent({ project, gridSize, user, chosenColor }, ref) {
+const CanvasComponent = forwardRef(function CanvasComponent({ project, setProject, gridSize, user, chosenColor }, ref) {
   // eslint-disable-next-line no-unused-vars
   const [penUp, togglePenUp] = useState(true);
   const [localUser, setLocalUser] = useState();
@@ -88,6 +88,13 @@ const CanvasComponent = forwardRef(function CanvasComponent({ project, gridSize,
 
     if (projectsArray[user.projectIndex].tiles[Number(e.target.id)]) 
       projectsArray[user.projectIndex].tiles[Number(e.target.id)] = chosenColor;
+    
+    if (project.tiles[Number(e.target.id)])
+      setProject((current) => {
+        let newState = {...current};
+        newState.tiles[Number(e.target.id)] = chosenColor;
+        return newState;
+      })
 
     localStorage.setItem(
       (
@@ -168,6 +175,7 @@ CanvasComponent.propTypes = {
     name: PropTypes.string,
     tiles: PropTypes.arrayOf(PropTypes.string)
   }),
+  setProject: PropTypes.func.isRequired,
   gridSize: PropTypes.number,
   user: PropTypes.shape({
     isLoggedIn: PropTypes.bool,
