@@ -16,7 +16,65 @@ const CanvasComponent = forwardRef(function CanvasComponent({ project, gridSize,
     } else {
       setLocalTempUserProjects(tempProjects)
     }
-  }, [user, setLocalUser, setLocalTempUserProjects])
+  }, [user, setLocalUser, setLocalTempUserProjects]);
+
+  /**
+   * Add the touch move event listener to the canvas in a useEffect.
+   * The reason for this is that React does not support editing the 
+   * passive option on events and touch move is automatically a 
+   * passive event except on Safari.
+   */
+  useEffect(() => {
+    const canvas = document.querySelector("#canvas");
+
+    function _drawEffect(e) {
+      e.target.style.backgroundColor = chosenColor;
+
+      let projectsArray = localUser
+        ? [ ...localUser.projects ]
+        : localTempUserProjects
+        ? [ ...localTempUserProjects ]
+        : [];
+
+      if (projectsArray[user.projectIndex].tiles[Number(e.target.id)]) 
+        projectsArray[user.projectIndex].tiles[Number(e.target.id)] = chosenColor;
+
+      localStorage.setItem(
+        (
+          localUser
+            ? "user"
+            : localTempUserProjects
+            ? "tempUserProjects"
+            : ""
+        ), 
+        JSON.stringify(
+          localUser
+          ? { ...localUser, projects: projectsArray }
+          : localTempUserProjects
+          ? [...projectsArray]
+          : ""
+        )
+      );
+    }
+
+    function handleTouchMove(e) {
+      e.preventDefault();
+      console.log("local")
+      const touch = e.touches[0];
+      const fakeEvent = {
+        target: document.elementFromPoint(touch.clientX, touch.clientY),
+      };
+      if (!penUp && canvas.contains(fakeEvent.target)) {
+        _drawEffect(fakeEvent);
+      }
+    }
+    
+    canvas.addEventListener("touchmove", handleTouchMove, { passive: false })
+  
+    return () => {
+      canvas.removeEventListener("touchmove", handleTouchMove)
+    }
+  }, [penUp, chosenColor, localTempUserProjects, localUser, user])
   
 
   function _draw(e) {
@@ -56,18 +114,6 @@ const CanvasComponent = forwardRef(function CanvasComponent({ project, gridSize,
     togglePenUp(true);
   }
 
-  function handleTouchMove(e) {
-    e.preventDefault();
-    const touch = e.touches[0];
-    const fakeEvent = {
-      target: document.elementFromPoint(touch.clientX, touch.clientY),
-    };
-    if (!penUp && e.target.contains(fakeEvent.target)) {
-      _draw(fakeEvent);
-    }
-    console.log(e);
-  }
-
   return (
     <div
       id="canvas"
@@ -78,7 +124,7 @@ const CanvasComponent = forwardRef(function CanvasComponent({ project, gridSize,
       onMouseOver={handleMouseOver}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
-      onTouchMove={handleTouchMove}
+      // onTouchMove={handleTouchMove}
     >
       {
         project.tiles.map((el, idx) => (
