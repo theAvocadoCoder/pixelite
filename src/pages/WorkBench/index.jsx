@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { extractNumber } from "../../helpers";
 import CanvasComponent from "./components/Canvas";
+import Controls from "./components/Controls";
 
 
 function WorkBench() {
@@ -88,6 +89,7 @@ function WorkBench() {
                 ref={tileRefs}
                 chosenColor={chosenColor} 
               />
+              <Controls setChosenColor={setChosenColor} chosenColor={chosenColor} project={project} />
             </>
           )
         }
