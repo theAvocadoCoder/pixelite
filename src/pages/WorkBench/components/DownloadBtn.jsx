@@ -18,7 +18,6 @@ const DownloadBtn = ({project}) => {
 
   function openPreview() {
     const canvas = canvasRef.current;
-    console.log(project.tiles[0]);
     const ctx = canvas.getContext("2d");
     let xPosition = 0;
     let yPosition = 0;
@@ -51,8 +50,9 @@ const DownloadBtn = ({project}) => {
     <div>
       <button
         onClick={openPreview}
+        className="p-3 bg-blue-500 text-white rounded-md w-max"
       >
-        Download
+        Preview
       </button>
       <dialog ref={dialogRef}>
         <img
@@ -71,20 +71,29 @@ const DownloadBtn = ({project}) => {
           Your browser does not support HTML canvas,
           sorry.
         </canvas>
-        <button
-          style={{ margin: "10px auto" }}
-          ref={imageBtnRef}
-          onClick={() => dialogRef.current.close()}
+        <div
+          className="flex p-3 items-center justify-evenly"
         >
-          <a
-            href={canvasImg}
-            download={project.name}
-            style={{ textDecoration: "none" }}
-            className="text-black"
+          <button
+            ref={imageBtnRef}
+            onClick={() => dialogRef.current.close()}
+            className="p-3 bg-blue-500 text-white rounded-md w-max"
           >
-            Download Image
-          </a>
-        </button>
+            <a
+              href={canvasImg}
+              download={project.name}
+              style={{ textDecoration: "none" }}
+            >
+              Download Image
+            </a>
+          </button>
+          <button
+            onClick={() => dialogRef.current.close()}
+            className="p-3 border border-red-500 text-red-500 rounded-md w-fit"
+          >
+            Close
+          </button>
+        </div>
       </dialog>
     </div>
   )

@@ -38,6 +38,13 @@ const CanvasComponent = forwardRef(function CanvasComponent({ project, setProjec
 
       if (projectsArray[user.projectIndex].tiles[Number(e.target.id)]) 
         projectsArray[user.projectIndex].tiles[Number(e.target.id)] = chosenColor;
+    
+      if (project.tiles[Number(e.target.id)])
+        setProject((current) => {
+          let newState = {...current};
+          newState.tiles[Number(e.target.id)] = chosenColor;
+          return newState;
+        })
 
       localStorage.setItem(
         (
@@ -74,7 +81,7 @@ const CanvasComponent = forwardRef(function CanvasComponent({ project, setProjec
     return () => {
       canvas.removeEventListener("touchmove", handleTouchMove)
     }
-  }, [penUp, chosenColor, localTempUserProjects, localUser, user])
+  }, [penUp, project, setProject, chosenColor, localTempUserProjects, localUser, user])
   
 
   function _draw(e) {

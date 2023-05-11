@@ -66,7 +66,9 @@ function WorkBench() {
           project && (
             <>
               <p>Hey, {userInfo ? userInfo.username : "there"}</p>
-              <p>
+              <p
+                className="w-64 md:w-96 mx-auto"
+              >
                 This is {
                   project.name
                 }, your {(projectIndex + 1)}{
