@@ -79,15 +79,32 @@ const CanvasComponent = forwardRef(function CanvasComponent({ project, gridSize,
 
   function _draw(e) {
     e.target.style.backgroundColor = chosenColor;
-    if (localUser) {
-      let projectsArray = [ ...localUser.projects ];
+
+    let projectsArray = localUser
+      ? [ ...localUser.projects ]
+      : localTempUserProjects
+      ? [ ...localTempUserProjects ]
+      : [];
+
+    if (projectsArray[user.projectIndex].tiles[Number(e.target.id)]) 
       projectsArray[user.projectIndex].tiles[Number(e.target.id)] = chosenColor;
-      localStorage.setItem("user", JSON.stringify({ ...localUser, projects: projectsArray }));
-    } else if (localTempUserProjects) {
-      let projectsArray = [ ...localTempUserProjects ];
-      projectsArray[user.projectIndex].tiles[Number(e.target.id)] = chosenColor;
-      localStorage.setItem("tempUserProjects", JSON.stringify([...projectsArray]));
-    }
+
+    localStorage.setItem(
+      (
+        localUser
+          ? "user"
+          : localTempUserProjects
+          ? "tempUserProjects"
+          : ""
+      ), 
+      JSON.stringify(
+        localUser
+        ? { ...localUser, projects: projectsArray }
+        : localTempUserProjects
+        ? [...projectsArray]
+        : ""
+      )
+    );
   }
 
   function handleMouseUp() {
@@ -117,7 +134,7 @@ const CanvasComponent = forwardRef(function CanvasComponent({ project, gridSize,
   return (
     <div
       id="canvas"
-      className="border-2 border-solid border-gray-800 w-96 h-96 mx-auto flex flex-wrap"
+      className="border-2 border-solid border-gray-800 w-64 h-64 md:w-96 md:h-96 mx-auto flex flex-wrap"
       // style={{ cursor: "url(\"/assets/circle.svg\") 10 10, pointer" }}
       onMouseUp={handleMouseUp}
       onMouseDown={handleMouseDown}
